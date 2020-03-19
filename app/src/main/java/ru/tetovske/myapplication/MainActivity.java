@@ -1,17 +1,26 @@
 package ru.tetovske.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import ru.tetovske.myapplication.adapters.ItemListAdapter;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView itemsRecycleView;
+    private List<NumberItem> database;
     private static final String TAG = "MainActivity";
 
     @Override
@@ -66,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onRestoreInstanceState(final Bundle savedInstanceState) {
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         Log.d(getLogTag(), "onRestoreInstanceState");
     }
@@ -76,8 +85,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
+        InitNumbersList();
         itemsRecycleView = findViewById(R.id.item_list);
-        itemsRecycleView.setLayoutManager(new LinearLayoutManager(this));
+        itemsRecycleView.setLayoutManager(new GridLayoutManager(this, 3));
+        ItemListAdapter adapter = new ItemListAdapter(database);
+        itemsRecycleView.setAdapter(adapter);
+
+        Button addNumberButton = findViewById(R.id.add_element_btn);
+        addNumberButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                database.add(new NumberItem(database.get(database.size() - 1).GetValue() + 1));
+                Objects.requireNonNull(itemsRecycleView.getAdapter()).notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void InitNumbersList() {
+        database = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            database.add(new NumberItem(i));
+        }
     }
 
     @Override
