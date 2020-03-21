@@ -1,51 +1,54 @@
-package ru.tetovske.myapplication;
+package ru.tetovske.myapplication.pojo;
 
 import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Data {
 
-    private static Data instance;
-    private ArrayList<NumberItem> items;
+    private static Data sInstance;
+    private ArrayList<NumberItem> mItems;
 
     private Data() {
-        items = new ArrayList<>();
+        mItems = new ArrayList<>();
         for (int i = 1; i <= 100; i++) {
-            items.add(new NumberItem(i));
+            mItems.add(new NumberItem(i));
         }
     }
 
     public static Data getInstance() {
-        if (instance == null) {
-            instance = new Data();
+        if (sInstance == null) {
+            sInstance = new Data();
         }
-        return instance;
+        return sInstance;
     }
 
     public ArrayList<NumberItem> getData() {
-        return items;
+        return mItems;
+    }
+
+    public void setData(ArrayList<NumberItem> dataList) {
+        this.mItems = new ArrayList<>(dataList);
     }
 
     public void addElement(int value) {
-        items.add(new NumberItem(value));
+        mItems.add(new NumberItem(value));
     }
 
     public static class NumberItem implements Parcelable {
 
-        private int value;
-        private int itemColor;
+        private int mValue;
+        private int mItemColor;
 
         NumberItem(int value) {
             SetValue(value);
         }
 
         NumberItem(Parcel in) {
-            value = in.readInt();
-            itemColor = in.readInt();
+            mValue = in.readInt();
+            mItemColor = in.readInt();
         }
 
         public static final Creator<NumberItem> CREATOR = new Creator<NumberItem>() {
@@ -61,23 +64,23 @@ public class Data {
         };
 
         public int GetValue() {
-            return value;
+            return mValue;
         }
 
         public int GetColor() {
-            return itemColor;
+            return mItemColor;
         }
 
         private void SetValue(int value) {
-            this.value = value;
+            this.mValue = value;
             SetColor();
         }
 
         private void SetColor() {
-            if (value % 2 == 0) {
-                itemColor = Color.RED;
+            if (mValue % 2 == 0) {
+                mItemColor = Color.RED;
             } else {
-                itemColor = Color.BLUE;
+                mItemColor = Color.BLUE;
             }
         }
 
@@ -88,8 +91,8 @@ public class Data {
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
-            dest.writeInt(value);
-            dest.writeInt(itemColor);
+            dest.writeInt(mValue);
+            dest.writeInt(mItemColor);
         }
     }
 }

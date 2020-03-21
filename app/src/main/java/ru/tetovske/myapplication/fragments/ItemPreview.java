@@ -15,11 +15,9 @@ import ru.tetovske.myapplication.R;
 
 public class ItemPreview extends Fragment {
     private static final String VALUE_ARG_NAME = "num", COLOR_ARG_NAME = "color";
-    private int number, numColor;
+    private int mNumber, mNumColor;
 
-    public ItemPreview() {
-        // Required empty public constructor
-    }
+    public ItemPreview() {}
 
     public static ItemPreview newInstance(int value, int color) {
         ItemPreview fragment = new ItemPreview();
@@ -34,8 +32,8 @@ public class ItemPreview extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            number = getArguments().getInt(VALUE_ARG_NAME);
-            numColor = getArguments().getInt(COLOR_ARG_NAME);
+            mNumber = getArguments().getInt(VALUE_ARG_NAME);
+            mNumColor = getArguments().getInt(COLOR_ARG_NAME);
         }
     }
 
@@ -48,7 +46,7 @@ public class ItemPreview extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         TextView textToPreview = view.findViewById(R.id.item_preview);
-        textToPreview.setText(String.valueOf(number));
-        textToPreview.setTextColor(numColor);
+        textToPreview.setText(String.valueOf(mNumber));
+        textToPreview.setTextColor(mNumColor);
     }
 }
